@@ -13,17 +13,14 @@ WORKDIR /usr/app
 # Running npm install for production purpose will not run dev dependencies.
 RUN npm install -only=production
 
-RUN groupadd -r nodegroup
-RUN useradd -r -g nodegroup node
-
-USER nodeuser
+RUN groupadd -r nodeuser
+RUN useradd -r -g nodeuser nodeuser
 
 # Chown all the files to the app user.
-RUN chown -R node:nodegroup /usr/app
+RUN chown -R nodeuser:nodeuser /usr/app
 
 # Switch to 'node'
-USER node
+USER nodeuser
 
 # Open the mapped ports
 EXPOSE 1337
-EXPOSE 5900
