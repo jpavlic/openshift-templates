@@ -1,4 +1,4 @@
-FROM jpavlic/node-debug-os
+FROM node
 
 ENV HOME=/home/yodauser
 
