@@ -13,17 +13,17 @@ WORKDIR /usr/app
 # Running npm install for production purpose will not run dev dependencies.
 RUN npm install -only=production
 
-# Create a user group 'yodagroup'
-RUN addgroup --system yodagroup
+# Create a user group 'nodegroup'
+RUN addgroup -S -g 10101 nodegroup
 
-# Create a user 'yoda' under 'yodagroup'
-RUN adduser --home /usr/app/src --shell /bin/bash yoda yodagroup
+# Create a user 'node' under 'nodegroup'
+adduser -S -D -u 10101 -s /bin/bash -h /usr/app/src -g "Node User" -G nodegroup node
 
 # Chown all the files to the app user.
-RUN chown -R yoda:yodagroup /usr/app
+RUN chown -R node:nodegroup /usr/app
 
-# Switch to 'yoda'
-USER yoda
+# Switch to 'node'
+USER node
 
 # Open the mapped ports
 EXPOSE 1337

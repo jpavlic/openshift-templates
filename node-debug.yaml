@@ -82,7 +82,7 @@ objects:
       browser: chrome
     type: ClusterIP
     ports:
-    - name: yoda-port
+    - name: ui-port
       port: 1337
       targetPort: 1337
       protocol: TCP

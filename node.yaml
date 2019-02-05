@@ -86,7 +86,7 @@ objects:
       port: 4444
       targetPort: 4444
       protocol: TCP
-    - name: yoda-port
+    - name: ui-port
       port: 1337
       targetPort: 1337
       protocol: TCP
