@@ -13,11 +13,9 @@ WORKDIR /usr/app
 # Running npm install for production purpose will not run dev dependencies.
 RUN npm install -only=production
 
-# Create a user group 'nodegroup'
-RUN addgroup -S -g 10101 nodegroup
-
-# Create a user 'node' under 'nodegroup'
-RUN adduser -S -D -u 10101 -s /bin/bash -h /usr/app/src -g "Node User" -G nodegroup node
+RUN groupadd -g 999 nodeuser && \
+    useradd -r -u 999 -h /usr/app/src -g nodegroup nodeuser
+USER nodeuser
 
 # Chown all the files to the app user.
 RUN chown -R node:nodegroup /usr/app
