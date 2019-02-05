@@ -1,16 +1,30 @@
-FROM node
+FROM node:10
 
-ENV HOME=/home/yodauser
+# Copy source to container
+RUN mkdir -p /usr/app/src
 
-USER root
+# Copy source code
+COPY src /usr/app/src
+COPY package.json /usr/app
+COPY package-lock.json /usr/app
 
-COPY ./contrib /usr/local/bin
+WORKDIR /usr/app
 
-RUN useradd -ms /bin/bash  yodauser
+# Running npm install for production purpose will not run dev dependencies.
+RUN npm install -only=production
 
-RUN chown -R yodauser:0 /usr/local/bin/fix-permissions $HOME
+# Create a user group 'yodagroup'
+RUN addgroup -S yodagroup
 
-USER yodauser
-WORKDIR $HOME
+# Create a user 'yoda' under 'yodagroup'
+RUN adduser -S -D -h /usr/app/src yoda yodagroup
 
+# Chown all the files to the app user.
+RUN chown -R yoda:yodagroup /usr/app
+
+# Switch to 'yoda'
+USER yoda
+
+# Open the mapped ports
+EXPOSE 1337
 EXPOSE 5900
