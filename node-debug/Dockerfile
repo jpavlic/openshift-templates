@@ -17,7 +17,7 @@ RUN npm install -only=production
 RUN addgroup -S yodagroup
 
 # Create a user 'yoda' under 'yodagroup'
-RUN adduser -S -D -h /usr/app/src yoda yodagroup
+RUN adduser -S -D -s /bin/bash -h /usr/app/src yoda yodagroup
 
 # Chown all the files to the app user.
 RUN chown -R yoda:yodagroup /usr/app
@@ -25,5 +25,6 @@ RUN chown -R yoda:yodagroup /usr/app
 # Switch to 'yoda'
 USER yoda
 
-# Open the mapped port
+# Open the mapped ports
 EXPOSE 1337
+EXPOSE 5900
