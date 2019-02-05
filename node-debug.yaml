@@ -19,7 +19,7 @@ objects:
       contextDir: node-debug
       type: Git
       git:
-        uri: https://github.com/jpavlic/selenium-openshift-templates
+        uri: https://github.com/jpavlic/openshift-templates
         ref: master
     strategy:
       type: Docker
