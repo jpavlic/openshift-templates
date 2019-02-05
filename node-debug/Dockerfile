@@ -25,3 +25,5 @@ USER nodeuser
 # Open the mapped ports
 EXPOSE 1337
 EXPOSE 5900
+
+CMD [ "node" ]
