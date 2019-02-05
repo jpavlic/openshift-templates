@@ -14,7 +14,7 @@ WORKDIR /usr/app
 RUN npm install -only=production
 
 RUN groupadd -r nodegroup
-RUN useradd -r -d /usr/app/src -g nodegroup node
+RUN useradd -r -g nodegroup node
 
 USER nodeuser
 
