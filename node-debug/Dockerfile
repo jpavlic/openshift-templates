@@ -8,11 +8,9 @@ COPY ./contrib /usr/local/bin
 
 RUN useradd -ms /bin/bash  yodauser
 
+RUN chown -R yodauser:0 /usr/local/bin/fix-permissions $HOME
+
 USER yodauser
-
-RUN chown -R 1001:0 /usr/local/bin/fix-permissions $HOME
-
-USER 1001
 WORKDIR $HOME
 
 EXPOSE 5900
