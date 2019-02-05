@@ -4,6 +4,8 @@ ENV HOME=/home/yodauser
 
 USER root
 
+COPY ./contrib /usr/local/bin
+
 RUN useradd -ms /bin/bash  yodauser
 
 USER yodauser
