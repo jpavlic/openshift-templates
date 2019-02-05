@@ -14,7 +14,7 @@ WORKDIR /usr/app
 RUN npm install -only=production
 
 # Create a user group 'yodagroup'
-RUN addgroup -S yodagroup
+RUN addgroup --system yodagroup
 
 # Create a user 'yoda' under 'yodagroup'
 RUN adduser --home /usr/app/src --shell /bin/bash yoda yodagroup
