@@ -13,8 +13,9 @@ WORKDIR /usr/app
 # Running npm install for production purpose will not run dev dependencies.
 RUN npm install -only=production
 
-RUN groupadd -g 999 nodeuser && \
-    useradd -r -u 999 -h /usr/app/src -g nodegroup nodeuser
+RUN groupadd -r nodegroup
+RUN useradd -r -d /usr/app/src -g nodegroup node
+
 USER nodeuser
 
 # Chown all the files to the app user.
