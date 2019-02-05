@@ -1,4 +1,4 @@
-FROM rhscl/s2i-base-rhel7:1
+FROM centos/s2i-base-centos7
 
 # This image provides a Node.JS environment you can use to run your Node.JS
 # applications.
@@ -15,10 +15,9 @@ EXPOSE 5900
 # Environment:
 # * $NPM_RUN - Select an alternate / custom runtime mode, defined in your package.json files' scripts section (default: npm run "start").
 # Expose ports:
-# * 1337 - Unprivileged port used by nodejs application
-# * 5900 - Privileged port used by to VNC
+# * 8080 - Unprivileged port used by nodejs application
 
-ENV NODEJS_VERSION=10 \
+ENV NODEJS_VERSION=8 \
     NPM_RUN=start \
     NAME=nodejs \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
@@ -37,23 +36,22 @@ LABEL summary="$SUMMARY" \
       io.k8s.description="$DESCRIPTION" \
       io.k8s.display-name="Node.js $NODEJS_VERSION" \
       io.openshift.expose-services="1337:http" \
-      io.openshift.tags="builder,$NAME,${NAME}${NODEJS_VERSION}" \
+      io.openshift.tags="builder,$NAME,$NAME$NODEJS_VERSION" \
       io.openshift.s2i.scripts-url="image:///usr/libexec/s2i" \
       io.s2i.scripts-url="image:///usr/libexec/s2i" \
       com.redhat.dev-mode="DEV_MODE:false" \
       com.redhat.deployments-dir="${APP_ROOT}/src" \
-      com.redhat.dev-mode.port="DEBUG_PORT:5858" \
-      com.redhat.component="rh-${NAME}${NODEJS_VERSION}-container" \
-      name="rhscl/$NAME-$NODEJS_VERSION-rhel7" \
-      version="1" \
+      com.redhat.dev-mode.port="DEBUG_PORT:5858"\
+      com.redhat.component="rh-$NAME$NODEJS_VERSION-container" \
+      name="centos/$NAME-$NODEJS_VERSION-centos7" \
+      version="$NODEJS_VERSION" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>" \
       help="For more information visit https://github.com/sclorg/s2i-nodejs-container" \
-      usage="s2i build <SOURCE-REPOSITORY> rhscl/$NAME-$NODEJS_VERSION-rhel7:latest <APP-NAME>"
+      usage="s2i build <SOURCE-REPOSITORY> centos/$NAME-$NODEJS_VERSION-centos7:latest <APP-NAME>"
 
-RUN yum install -y yum-utils && \
-    prepare-yum-repositories rhel-server-rhscl-7-rpms && \
+RUN yum install -y centos-release-scl-rh && \
     ( [ "rh-${NAME}${NODEJS_VERSION}" != "${NODEJS_SCL}" ] && yum remove -y ${NODEJS_SCL}\* || : ) && \
-    INSTALL_PKGS="rh-nodejs10 rh-nodejs10-npm rh-nodejs10-nodejs-nodemon nss_wrapper" && \
+    INSTALL_PKGS="rh-nodejs8 rh-nodejs8-npm rh-nodejs8-nodejs-nodemon nss_wrapper" && \
     ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
@@ -62,7 +60,7 @@ RUN yum install -y yum-utils && \
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-# Copy extra files to the image.
+# Copy extra files to the image, including help file.
 COPY ./root/ /
 
 # Drop the root user and make the content of /opt/app-root owned by user 1001
