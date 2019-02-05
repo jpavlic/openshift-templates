@@ -18,7 +18,7 @@ EXPOSE 5900
 # * 1337 - Unprivileged port used by nodejs application
 # * 5900 - Privileged port used by to VNC
 
-ENV NODEJS_VERSION=8 \
+ENV NODEJS_VERSION=10 \
     NPM_RUN=start \
     NAME=nodejs \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
@@ -53,7 +53,7 @@ LABEL summary="$SUMMARY" \
 RUN yum install -y yum-utils && \
     prepare-yum-repositories rhel-server-rhscl-7-rpms && \
     ( [ "rh-${NAME}${NODEJS_VERSION}" != "${NODEJS_SCL}" ] && yum remove -y ${NODEJS_SCL}\* || : ) && \
-    INSTALL_PKGS="rh-nodejs8 rh-nodejs8-npm rh-nodejs8-nodejs-nodemon nss_wrapper" && \
+    INSTALL_PKGS="rh-nodejs10 rh-nodejs10-npm rh-nodejs10-nodejs-nodemon nss_wrapper" && \
     ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
