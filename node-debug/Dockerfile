@@ -17,7 +17,7 @@ RUN npm install -only=production
 RUN addgroup -S -g 10101 nodegroup
 
 # Create a user 'node' under 'nodegroup'
-adduser -S -D -u 10101 -s /bin/bash -h /usr/app/src -g "Node User" -G nodegroup node
+RUN adduser -S -D -u 10101 -s /bin/bash -h /usr/app/src -g "Node User" -G nodegroup node
 
 # Chown all the files to the app user.
 RUN chown -R node:nodegroup /usr/app
