@@ -17,7 +17,7 @@ RUN npm install -only=production
 RUN addgroup -S yodagroup
 
 # Create a user 'yoda' under 'yodagroup'
-RUN adduser -S -D -s /bin/bash -h /usr/app/src yoda yodagroup
+RUN adduser --home /usr/app/src --shell /bin/bash yoda yodagroup
 
 # Chown all the files to the app user.
 RUN chown -R yoda:yodagroup /usr/app
