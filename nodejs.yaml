@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: nodejs-debug
+  annotations:
+    description: "Nodejs"
+    iconClass: "icon-selenium"
+    tags: "nodejs,debug"
+objects:
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: nodejs-debug
+  spec:
+    triggers:
+    - type: ConfigChange
+      configChange: {}
+    source:
+      contextDir: nodejs-debug
+      type: Git
+      git:
+        uri: https://github.com/jpavlic/openshift-templates
+        ref: master
+    strategy:
+      type: Docker
+      DockerStrategy: {}
+    output:
+      to:
+        kind: ImageStreamTag
+        name: nodejs-debug:latest
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: nodejs-debug
+  spec:
+    dockerImageRepository: ''
+    tags:
+    - name: latest
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: nodejs-debug
+  spec:
+    strategy:
+      type: Recreate
+    triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - master
+        from:
+          kind: ImageStreamTag
+          name: nodejs-debug:latest
+    - type: ConfigChange
+    replicas: 1
+    selector:
+      browser: chrome
+    template:
+      metadata:
+        name: nodejs-debug-master
+        labels:
+          browser: chrome
+      spec:
+        containers:
+        - env:
+          - name: REMOTE_HOST
+            value: ${REMOTE_HOST}
+          image: nodejs-debug
+          name: master
+          ports:
+          - containerPort: 5900
+            protocol: TCP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: nodejs-debug
+  spec:
+    selector:
+      browser: chrome
+    type: ClusterIP
+    ports:
+    - name: vnc-port
+      port: 5900
+      targetPort: 5900
+      protocol: TCP
+parameters:
+  - name: REMOTE_HOST
+    description: The remote host
+    value: ""
