@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: nodejsbase
+  name: NodejsBase
   annotations:
     description: "Node"
     iconClass: "icon-node"
@@ -10,13 +10,13 @@ objects:
 - kind: BuildConfig
   apiVersion: v1
   metadata:
-    name: nodejsbase
+    name: NodejsBase
   spec:
     triggers:
     - type: ConfigChange
       configChange: {}
     source:
-      contextDir: nodejsbase
+      contextDir: NodejsBase
       type: Git
       git:
         uri: https://github.com/jpavlic/openshift-templates
@@ -27,11 +27,11 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: nodejsbase:latest
+        name: NodejsBase:latest
 - kind: ImageStream
   apiVersion: v1
   metadata:
-    name: nodejsbase
+    name: NodejsBase
   spec:
     dockerImageRepository: ''
     tags:
@@ -39,7 +39,7 @@ objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    name: nodejsbase
+    name: NodejsBase
   spec:
     strategy:
       type: Recreate
@@ -51,14 +51,14 @@ objects:
         - master
         from:
           kind: ImageStreamTag
-          name: nodejsbase:latest
+          name: NodejsBase:latest
     - type: ConfigChange
     replicas: 1
     selector:
       browser: chrome
     template:
       metadata:
-        name: nodejsbase-master
+        name: NodejsBase-master
         labels:
           browser: chrome
       spec:
@@ -66,7 +66,7 @@ objects:
         - env:
           - name: REMOTE_HOST
             value: ${REMOTE_HOST}
-          image: nodejsbase
+          image: NodejsBase
           name: master
           ports:
           - containerPort: 1337
@@ -76,7 +76,7 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: nodejsbase
+    name: NodejsBase
   spec:
     selector:
       browser: chrome
