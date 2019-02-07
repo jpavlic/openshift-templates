@@ -5,7 +5,7 @@
 # IMAGE_NAME specifies the name of the candidate image used for testing.
 # The image has to be available before this script is executed.
 #
-IMAGE_NAME=${IMAGE_NAME-jpavlic/nodejs-debug}
+IMAGE_NAME=${IMAGE_NAME-jpavlic/nodejs}
 
 docker run ${IMAGE_NAME} id
 docker run ${IMAGE_NAME} pwd

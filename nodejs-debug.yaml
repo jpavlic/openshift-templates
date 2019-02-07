@@ -3,8 +3,8 @@ kind: Template
 metadata:
   name: nodejs-debug
   annotations:
-    description: "Nodejs"
-    iconClass: "icon-selenium"
+    description: "NodeJS"
+    iconClass: "icon-nodejs"
     tags: "nodejs,debug"
 objects:
 - kind: BuildConfig
@@ -64,11 +64,13 @@ objects:
       spec:
         containers:
         - env:
-          - name: REMOTE_HOST
-            value: ${REMOTE_HOST}
           image: nodejs-debug
           name: master
           ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 80
+            protocol: TCP
           - containerPort: 5900
             protocol: TCP
 - apiVersion: v1
