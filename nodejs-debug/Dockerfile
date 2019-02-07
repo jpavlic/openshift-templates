@@ -11,4 +11,6 @@ RUN /usr/local/bin/fix-permissions $HOME
 USER 1001
 WORKDIR $HOME
 
+EXPOSE 80
+EXPOSE 8080
 EXPOSE 5900
