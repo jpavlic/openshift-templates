@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: node
+  name: nodejs
   annotations:
     description: "Node server"
     iconClass: "icon-node"
-    tags: "node"
+    tags: "nodejs"
 objects:
 - kind: BuildConfig
   apiVersion: v1
   metadata:
-    name: node
+    name: nodejs
   spec:
     triggers:
     - type: ConfigChange
       configChange: {}
     source:
-      contextDir: node
+      contextDir: nodejs
       type: Git
       git:
         uri: https://github.com/jpavlic/openshift-templates
@@ -27,11 +27,11 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: node:latest
+        name: nodejs:latest
 - kind: ImageStream
   apiVersion: v1
   metadata:
-    name: node
+    name: nodejs
   spec:
     dockerImageRepository: ''
     tags:
@@ -39,7 +39,7 @@ objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    name: node
+    name: nodejs
   spec:
     strategy:
       type: Recreate
@@ -51,20 +51,20 @@ objects:
         - master
         from:
           kind: ImageStreamTag
-          name: node:latest
+          name: js:latest
     - type: ConfigChange
     replicas: 1
     selector:
       browser: chrome
     template:
       metadata:
-        name: node-master
+        name: nodejs-master
         labels:
           browser: chrome
       spec:
         containers:
         - env:
-          image: node
+          image: nodejs
           name: master
           ports:
           - containerPort: 1337
@@ -72,20 +72,12 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: node
+    name: nodejs
   spec:
     selector:
       browser: chrome
     type: ClusterIP
     ports:
-    - name: node-port
-      port: 5555
-      targetPort: 5555
-      protocol: TCP
-    - name: node-port-grid
-      port: 4444
-      targetPort: 4444
-      protocol: TCP
     - name: ui-port
       port: 1337
       targetPort: 1337
